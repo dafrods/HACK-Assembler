@@ -1,4 +1,3 @@
 .vscode
 __pycache__
-C++/.vs
-C++ Windows/.vs
+build
