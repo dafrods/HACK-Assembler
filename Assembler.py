@@ -40,7 +40,7 @@ class Parser:
         self.hasMoreCommands()
         self.advance()
 
-    def commandType(self,command = None)->str:
+    def commandType(self,command = None)->str|None:
         if command is None:
             command = self._current_command
 
@@ -51,19 +51,19 @@ class Parser:
         elif '=' in command or ';' in command:
             return 'C_INSTRUCTION'
     
-    def symbol(self)->str:
+    def symbol(self)->str|None:
         if self.commandType() == 'A_INSTRUCTION':
             return self._current_command[1:]
         elif self.commandType() == 'L_INSTRUCTION':
             return self._current_command[1:-1]
       
-    def dest(self)->str:
+    def dest(self)->str|None:
         if self.commandType() != 'C_INSTRUCTION':
             return
         if '=' in self._current_command:
             return self._current_command.split('=')[0]
 
-    def comp(self)->str:
+    def comp(self)->str|None:
         if self.commandType() != 'C_INSTRUCTION':
             return
         if '=' in self._current_command and ';' in self._current_command:
@@ -73,7 +73,7 @@ class Parser:
         elif ';' in self._current_command:
             return self._current_command.split(';')[0]
 
-    def jump(self)->str:
+    def jump(self)->str|None:
         if self.commandType() != 'C_INSTRUCTION':
             return
         if ';' in self._current_command:
@@ -113,7 +113,7 @@ class SymbolTable:
             'KBD':24576
         }
 
-    def addEntry(self,symbol:str,address:int=None):
+    def addEntry(self,symbol:str,address:int=0):
         self._symbols[symbol] = address
 
     def contains(self,symbol:str)->bool:
